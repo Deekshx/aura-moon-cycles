@@ -22,7 +22,7 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
     
     // Safety check for invalid date
     if (!date || isNaN(date.getTime())) {
-      return <div {...dayProps}>{dayProps.children}</div>;
+      return <div>{props.displayMonth?.getDate()}</div>;
     }
     
     // Check if day is in period history
@@ -68,7 +68,7 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
     
     return (
       <div className={className}>
-        {date ? format(date, 'd') : dayProps.children}
+        {format(date, 'd')}
       </div>
     );
   };
