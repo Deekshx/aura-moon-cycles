@@ -64,7 +64,6 @@ const ProfilePage = () => {
                       selected={periodStartDate}
                       onSelect={setPeriodStartDate}
                       className="p-3 pointer-events-auto text-white"
-                      dayClassName={() => "hover:bg-aurora-deep-purple/30"}
                     />
                   </div>
                 </div>

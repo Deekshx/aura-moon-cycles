@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { format, addDays, isWithinInterval, isSameDay } from 'date-fns';
+import { format, isWithinInterval, isSameDay } from 'date-fns';
 import { Calendar } from "@/components/ui/calendar";
+import { DayContent } from "react-day-picker";
 
 interface PeriodCalendarProps {
   periodHistory: {
@@ -16,15 +17,22 @@ interface PeriodCalendarProps {
 
 const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeriodPrediction }) => {
   // Custom day rendering to show period days
-  const renderDay = (day: Date) => {
+  const renderDay = (props: React.ComponentProps<typeof DayContent>) => {
+    const { date, ...dayProps } = props;
+    
+    // Safety check for invalid date
+    if (!date || isNaN(date.getTime())) {
+      return <div {...dayProps}>{dayProps.children}</div>;
+    }
+    
     // Check if day is in period history
     const isInPeriod = periodHistory.some(period => 
-      isWithinInterval(day, { start: period.startDate, end: period.endDate })
+      isWithinInterval(date, { start: period.startDate, end: period.endDate })
     );
     
     // Check if day is in predicted period
     const isInPredictedPeriod = nextPeriodPrediction ? 
-      isWithinInterval(day, { 
+      isWithinInterval(date, { 
         start: nextPeriodPrediction.startDate, 
         end: nextPeriodPrediction.endDate 
       }) : false;
@@ -40,25 +48,29 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
     
     // Add border on first day of period
     periodHistory.forEach(period => {
-      if (isSameDay(day, period.startDate)) {
+      if (isSameDay(date, period.startDate)) {
         className += " border-l-2 border-t-2 border-b-2 border-aurora-purple";
       }
-      if (isSameDay(day, period.endDate)) {
+      if (isSameDay(date, period.endDate)) {
         className += " border-r-2 border-t-2 border-b-2 border-aurora-purple";
       }
     });
     
     // Add border on predicted period
     if (nextPeriodPrediction) {
-      if (isSameDay(day, nextPeriodPrediction.startDate)) {
+      if (isSameDay(date, nextPeriodPrediction.startDate)) {
         className += " border-l-2 border-t-2 border-b-2 border-aurora-pastel-red";
       }
-      if (isSameDay(day, nextPeriodPrediction.endDate)) {
+      if (isSameDay(date, nextPeriodPrediction.endDate)) {
         className += " border-r-2 border-t-2 border-b-2 border-aurora-pastel-red";
       }
     }
     
-    return <div className={className}>{format(day, 'd')}</div>;
+    return (
+      <div className={className}>
+        {date ? format(date, 'd') : dayProps.children}
+      </div>
+    );
   };
 
   return (
@@ -68,10 +80,9 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
         <Calendar
           mode="single"
           className="p-3 pointer-events-auto text-white"
-          dayClassName={(day) => "hover:bg-aurora-deep-purple/30"}
           selected={new Date()}
           components={{
-            Day: ({ day }) => renderDay(day),
+            DayContent: (props) => renderDay(props)
           }}
         />
       </div>
