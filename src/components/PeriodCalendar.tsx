@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { format, isWithinInterval, isSameDay } from 'date-fns';
 import { Calendar } from "@/components/ui/calendar";
@@ -25,34 +24,8 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
       return <div>{props.displayMonth?.getDate()}</div>;
     }
     
-    // Check if day is in period history
-    const isInPeriod = periodHistory.some(period => {
-      if (!period.startDate || !period.endDate || 
-          isNaN(period.startDate.getTime()) || 
-          isNaN(period.endDate.getTime())) {
-        return false;
-      }
-      return isWithinInterval(date, { start: period.startDate, end: period.endDate });
-    });
-    
-    // Check if day is in predicted period
-    const isInPredictedPeriod = nextPeriodPrediction ? 
-      (nextPeriodPrediction.startDate && nextPeriodPrediction.endDate && 
-       !isNaN(nextPeriodPrediction.startDate.getTime()) && 
-       !isNaN(nextPeriodPrediction.endDate.getTime()) &&
-       isWithinInterval(date, { 
-         start: nextPeriodPrediction.startDate, 
-         end: nextPeriodPrediction.endDate 
-       })) : false;
-    
-    // Different styling based on if it's a past period or predicted period
+    // We're only keeping the border indicators for the start and end dates
     let className = "";
-    
-    if (isInPeriod) {
-      className = "bg-aurora-deep-purple/50 text-white rounded-md";
-    } else if (isInPredictedPeriod) {
-      className = "bg-aurora-light-purple/30 text-white rounded-full"; // Changed to rounded-full for circle shape
-    }
     
     // Add border on first day of period
     periodHistory.forEach(period => {
@@ -75,10 +48,10 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
         !isNaN(nextPeriodPrediction.startDate.getTime()) && 
         !isNaN(nextPeriodPrediction.endDate.getTime())) {
       if (isSameDay(date, nextPeriodPrediction.startDate)) {
-        className += " border-2 border-aurora-light-purple"; // Changed to full border for circle
+        className += " border-2 border-aurora-light-purple";
       }
       if (isSameDay(date, nextPeriodPrediction.endDate)) {
-        className += " border-2 border-aurora-light-purple"; // Changed to full border for circle
+        className += " border-2 border-aurora-light-purple";
       }
     }
     
@@ -104,12 +77,12 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
       </div>
       <div className="flex justify-between mt-4 text-sm">
         <div className="flex items-center">
-          <div className="w-3 h-3 bg-aurora-deep-purple/50 rounded-full mr-2"></div>
-          <span className="text-white">Past Period</span>
+          <div className="w-3 h-3 border-2 border-aurora-purple rounded-full mr-2"></div>
+          <span className="text-white">Period Start/End</span>
         </div>
         <div className="flex items-center">
-          <div className="w-3 h-3 bg-aurora-light-purple/30 rounded-full mr-2"></div>
-          <span className="text-white">Predicted Period</span>
+          <div className="w-3 h-3 border-2 border-aurora-light-purple rounded-full mr-2"></div>
+          <span className="text-white">Predicted Start/End</span>
         </div>
       </div>
     </div>
