@@ -26,16 +26,24 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
     }
     
     // Check if day is in period history
-    const isInPeriod = periodHistory.some(period => 
-      isWithinInterval(date, { start: period.startDate, end: period.endDate })
-    );
+    const isInPeriod = periodHistory.some(period => {
+      if (!period.startDate || !period.endDate || 
+          isNaN(period.startDate.getTime()) || 
+          isNaN(period.endDate.getTime())) {
+        return false;
+      }
+      return isWithinInterval(date, { start: period.startDate, end: period.endDate });
+    });
     
     // Check if day is in predicted period
     const isInPredictedPeriod = nextPeriodPrediction ? 
-      isWithinInterval(date, { 
-        start: nextPeriodPrediction.startDate, 
-        end: nextPeriodPrediction.endDate 
-      }) : false;
+      (nextPeriodPrediction.startDate && nextPeriodPrediction.endDate && 
+       !isNaN(nextPeriodPrediction.startDate.getTime()) && 
+       !isNaN(nextPeriodPrediction.endDate.getTime()) &&
+       isWithinInterval(date, { 
+         start: nextPeriodPrediction.startDate, 
+         end: nextPeriodPrediction.endDate 
+       })) : false;
     
     // Different styling based on if it's a past period or predicted period
     let className = "";
@@ -43,26 +51,34 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
     if (isInPeriod) {
       className = "bg-aurora-deep-purple/50 text-white rounded-md";
     } else if (isInPredictedPeriod) {
-      className = "bg-aurora-pastel-red/40 text-white rounded-md";
+      className = "bg-aurora-light-purple/30 text-white rounded-full"; // Changed to rounded-full for circle shape
     }
     
     // Add border on first day of period
     periodHistory.forEach(period => {
-      if (isSameDay(date, period.startDate)) {
-        className += " border-l-2 border-t-2 border-b-2 border-aurora-purple";
-      }
-      if (isSameDay(date, period.endDate)) {
-        className += " border-r-2 border-t-2 border-b-2 border-aurora-purple";
+      if (period.startDate && period.endDate && 
+          !isNaN(period.startDate.getTime()) && 
+          !isNaN(period.endDate.getTime())) {
+        if (isSameDay(date, period.startDate)) {
+          className += " border-l-2 border-t-2 border-b-2 border-aurora-purple";
+        }
+        if (isSameDay(date, period.endDate)) {
+          className += " border-r-2 border-t-2 border-b-2 border-aurora-purple";
+        }
       }
     });
     
     // Add border on predicted period
-    if (nextPeriodPrediction) {
+    if (nextPeriodPrediction && 
+        nextPeriodPrediction.startDate && 
+        nextPeriodPrediction.endDate && 
+        !isNaN(nextPeriodPrediction.startDate.getTime()) && 
+        !isNaN(nextPeriodPrediction.endDate.getTime())) {
       if (isSameDay(date, nextPeriodPrediction.startDate)) {
-        className += " border-l-2 border-t-2 border-b-2 border-aurora-pastel-red";
+        className += " border-2 border-aurora-light-purple"; // Changed to full border for circle
       }
       if (isSameDay(date, nextPeriodPrediction.endDate)) {
-        className += " border-r-2 border-t-2 border-b-2 border-aurora-pastel-red";
+        className += " border-2 border-aurora-light-purple"; // Changed to full border for circle
       }
     }
     
@@ -82,7 +98,7 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
           className="p-3 pointer-events-auto text-white"
           selected={new Date()}
           components={{
-            DayContent: (props) => renderDay(props)
+            DayContent: renderDay
           }}
         />
       </div>
@@ -92,7 +108,7 @@ const PeriodCalendar: React.FC<PeriodCalendarProps> = ({ periodHistory, nextPeri
           <span className="text-white">Past Period</span>
         </div>
         <div className="flex items-center">
-          <div className="w-3 h-3 bg-aurora-pastel-red/40 rounded-full mr-2"></div>
+          <div className="w-3 h-3 bg-aurora-light-purple/30 rounded-full mr-2"></div>
           <span className="text-white">Predicted Period</span>
         </div>
       </div>
