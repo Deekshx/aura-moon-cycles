@@ -1,5 +1,4 @@
-
-import { addDays, subDays, differenceInDays } from 'date-fns';
+import { addDays, subDays, differenceInDays, isSameDay } from 'date-fns';
 
 export interface PeriodData {
   startDate: Date;
@@ -63,12 +62,38 @@ export const predictNextPeriod = (userData: UserCycleData): PeriodData | null =>
   };
 };
 
+// Check if a period already exists in history with the same start date
+const periodExists = (history: PeriodData[], startDate: Date): boolean => {
+  return history.some(period => 
+    isSameDay(period.startDate, startDate)
+  );
+};
+
 // Add a new period to history
 export const addPeriodToHistory = (
   userData: UserCycleData, 
   startDate: Date, 
   endDate: Date
 ): UserCycleData => {
+  // Check if a period with this start date already exists
+  if (periodExists(userData.periodHistory, startDate)) {
+    // If it exists, remove the old one before adding the updated one
+    const updatedHistory = userData.periodHistory.filter(period => 
+      !isSameDay(period.startDate, startDate)
+    );
+    
+    const newPeriod: PeriodData = {
+      startDate: new Date(startDate),
+      endDate: new Date(endDate)
+    };
+    
+    // Add the updated period
+    const finalHistory = [...updatedHistory, newPeriod];
+    
+    return updateUserDataWithHistory(userData, finalHistory, startDate);
+  }
+  
+  // If period doesn't exist yet, proceed with normal addition
   const newPeriod: PeriodData = {
     startDate: new Date(startDate),
     endDate: new Date(endDate)
@@ -77,9 +102,15 @@ export const addPeriodToHistory = (
   // Add to history
   const updatedHistory = [...userData.periodHistory, newPeriod];
   
-  // Update last period date
-  const lastPeriodStartDate = new Date(startDate);
-  
+  return updateUserDataWithHistory(userData, updatedHistory, startDate);
+};
+
+// Helper function to update user data based on updated history
+const updateUserDataWithHistory = (
+  userData: UserCycleData,
+  updatedHistory: PeriodData[],
+  lastPeriodStartDate: Date
+): UserCycleData => {
   // Recalculate average cycle length if there are at least 2 periods
   let averageCycleLength = userData.averageCycleLength;
   if (updatedHistory.length >= 2) {
@@ -115,7 +146,7 @@ export const addPeriodToHistory = (
     averageCycleLength,
     averagePeriodLength,
     periodHistory: updatedHistory,
-    lastPeriodStartDate
+    lastPeriodStartDate: new Date(lastPeriodStartDate)
   };
 };
 

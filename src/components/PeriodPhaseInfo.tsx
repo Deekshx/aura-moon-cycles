@@ -13,28 +13,71 @@ const PeriodPhaseInfo: React.FC<PhaseInfoProps> = ({ currentPhase }) => {
       name: "Menstrual",
       days: "3-7 days",
       foods: ["Iron-rich foods (spinach, beans)", "Omega-3 fatty acids (salmon, walnuts)", "Water-rich fruits (watermelon, cucumber)", "Calcium-rich foods (yogurt, fortified plant milk)"],
-      exercises: ["Light walking", "Gentle yoga", "Stretching", "Swimming"],
+      exercises: [
+        "Light walking",
+        "Gentle yoga",
+        "Stretching",
+        "Swimming",
+        "Slow dancing",
+        "Tai chi",
+        "Meditation with gentle movement",
+        "Light stationary cycling",
+        "Restorative yoga poses"
+      ],
       description: "The menstrual phase begins on the first day of your period and lasts until bleeding stops. Hormone levels are at their lowest during this time."
     },
     {
       name: "Follicular",
       days: "7-10 days",
       foods: ["Fermented foods (kimchi, sauerkraut)", "Lean proteins (chicken, tofu)", "Cruciferous vegetables (broccoli, cauliflower)", "Berries"],
-      exercises: ["High-intensity workouts", "Strength training", "Running or jogging", "Dance classes"],
+      exercises: [
+        "High-intensity workouts",
+        "Strength training",
+        "Running or jogging",
+        "Dance classes",
+        "Boxing or kickboxing",
+        "Spinning classes",
+        "Circuit training",
+        "HIIT workouts",
+        "Rock climbing",
+        "Team sports"
+      ],
       description: "The follicular phase overlaps with menstruation and continues until ovulation. Estrogen levels rise, often bringing increased energy."
     },
     {
       name: "Ovulatory",
       days: "3-4 days",
       foods: ["Raw vegetables", "Fresh fruits", "Whole grains", "Fermented foods", "Light proteins"],
-      exercises: ["Interval training", "Circuit training", "Hiking", "Group fitness classes"],
+      exercises: [
+        "Interval training",
+        "Circuit training",
+        "Hiking",
+        "Group fitness classes",
+        "Power yoga",
+        "Dance cardio",
+        "Outdoor cycling",
+        "Swimming laps",
+        "CrossFit style workouts",
+        "Beach volleyball"
+      ],
       description: "The ovulatory phase is when an egg is released from the ovary. Energy levels are typically high with peak fertility."
     },
     {
       name: "Luteal",
       days: "10-14 days",
       foods: ["Complex carbohydrates (sweet potatoes, quinoa)", "Magnesium-rich foods (dark chocolate, nuts)", "Anti-inflammatory foods (turmeric, ginger)", "Vitamin B6-rich foods (chickpeas, bananas)"],
-      exercises: ["Pilates", "Light cardio", "Weight training", "Relaxing yoga"],
+      exercises: [
+        "Pilates",
+        "Light cardio",
+        "Weight training",
+        "Relaxing yoga",
+        "Nature walks",
+        "Barre workouts",
+        "Moderate strength training",
+        "Elliptical training",
+        "Deep stretching routines",
+        "Swimming"
+      ],
       description: "The luteal phase is the time between ovulation and the start of your next period. Progesterone rises, and you may experience PMS symptoms."
     }
   ];
