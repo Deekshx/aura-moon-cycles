@@ -10,6 +10,7 @@ import CalendarPage from "./pages/CalendarPage";
 import InfoPage from "./pages/InfoPage";
 import ChatPage from "./pages/ChatPage";
 import ProfilePage from "./pages/ProfilePage";
+import GamesPage from "./pages/GamesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/info" element={<InfoPage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/games" element={<GamesPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

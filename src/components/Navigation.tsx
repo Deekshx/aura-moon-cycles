@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Home, MessageCircle, Info, User } from 'lucide-react';
+import { Calendar, Home, MessageCircle, Info, User, GamepadIcon } from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
@@ -21,6 +21,11 @@ const Navigation = () => {
         <Link to="/calendar" className={`flex flex-col items-center p-2 ${isActive('/calendar') ? 'text-aurora-purple' : 'text-white/70'}`}>
           <Calendar size={24} />
           <span className="text-xs mt-1">Calendar</span>
+        </Link>
+        
+        <Link to="/games" className={`flex flex-col items-center p-2 ${isActive('/games') ? 'text-aurora-purple' : 'text-white/70'}`}>
+          <GamepadIcon size={24} />
+          <span className="text-xs mt-1">Games</span>
         </Link>
         
         <Link to="/info" className={`flex flex-col items-center p-2 ${isActive('/info') ? 'text-aurora-purple' : 'text-white/70'}`}>

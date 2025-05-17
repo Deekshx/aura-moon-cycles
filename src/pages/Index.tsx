@@ -68,6 +68,19 @@ const Index = () => {
             </Link>
           </div>
           
+          {/* Games Link */}
+          <Link to="/games" className="block">
+            <div className="bg-aurora-deep-purple/30 border border-aurora-purple/30 p-4 rounded-xl backdrop-blur-md hover:bg-aurora-deep-purple/40 transition-colors">
+              <h3 className="text-aurora-purple font-semibold mb-2">Feeling Stressed?</h3>
+              <p className="text-white mb-3">Try our relaxation games to ease period symptoms</p>
+              <Button 
+                className="bg-aurora-purple hover:bg-aurora-deep-purple"
+              >
+                Play Games
+              </Button>
+            </div>
+          </Link>
+          
           {/* Phase Information */}
           <PeriodPhaseInfo currentPhase={currentPhase} />
         </div>
